@@ -1,26 +1,10 @@
 class UsersController < ApplicationController
+  http_basic_authenticate_with :name => "123", :password => "123"
+  
+  skip_before_filter :authenticate_user!
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
    
-
-    def signup
-    if params[:fb_uid].present?
-      if params[:anonymous_id].present?
-        @user = User.find(params[:anonymous_id])
-        @user.fb_uid = params[:fb_uid]
-      else
-        @user = User.find_or_initialize_by_fb_uid(params[:fb_uid])
-      end
-      @user.fb_access_token = params[:fb_access_token]
-      @user.image = "http://graph.facebook.com/#{params[:fb_uid]}/picture?width=100&height=100"
-      @user.name = params[:name] || "Facebook User"
-     
-    else
-      @user = User.new
-    end
-    render json: { success: @user.save!, user_id: @user.id, errors: @user.errors }
-  end
-
 
   
 
@@ -48,14 +32,14 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
+    @user.save
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        format.json { render json: @user, status: :created }
+        format.xml { render xml: @user, status: :created }
       else
-        format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.xml { render xml: @user.errors, status: :unprocessable_entity }
       end
     end
   end

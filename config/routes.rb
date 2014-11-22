@@ -2,21 +2,27 @@ Rails.application.routes.draw do
   
   
   
-  devise_for :admin_users, ActiveAdmin::Devise.config
+  get 'static_pages/home'
+  
+  #namespace :api do
+  #  resources :users, :defaults => { :format => 'xml' }
+#  end
+  
+  
+  #devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   root to: 'users#index'
   
   resources :babies
 
-  resources :users do
-    
+  resources :users 
+  
+  
+  
 
-    collection do
-      post 'signup'
-      
-    end
-  end
-
+  
+  
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
