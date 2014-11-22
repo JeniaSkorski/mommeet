@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  http_basic_authenticate_with :name => "123", :password => "123"
+  #http_basic_authenticate_with :name => "123", :password => "123"
   
   skip_before_filter :authenticate_user!
   before_action :set_user, only: [:show, :edit, :update, :destroy]
