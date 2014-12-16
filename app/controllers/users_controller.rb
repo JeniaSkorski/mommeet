@@ -12,39 +12,41 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
+    
+    
+    render json: @users if stale?(etag: @users.all, last_modified: @users.maximum(:updated_at))
+    
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+   render json: @user if stale?(@user) 
   end
 
   # GET /users/new
-  def new
-    @user = User.new
-  end
+  #def new
+   # @user = User.new
+    
+  #end
 
   # GET /users/1/edit
-  def edit
-  end
+ # def edit
+  #end
 
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
-    @user.save
-    respond_to do |format|
-      if @user.save
-        format.json { render json: @user, status: :created }
-        format.xml { render xml: @user, status: :created }
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-        format.xml { render xml: @user.errors, status: :unprocessable_entity }
-      end
+     @user = User.new(user_params)
+
+    if @contact.save
+      render json: @user, status: :created
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
-  private
+  #private
 
  
 
@@ -52,25 +54,19 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-       format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.update(user_params)
+      head :no_content
+    else
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+     @user.destroy
+
+    head :no_content
   end
 
   private
