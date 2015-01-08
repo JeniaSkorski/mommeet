@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   
   
   
+  devise_for :users
   get 'static_pages/home'
   
   #namespace :api do
@@ -23,6 +24,7 @@ Rails.application.routes.draw do
   end
   
   #Rails.application.routes.draw do
+  devise_for :users
   #namespace :api, :defaults => {:format => :json} do
    #namespace :v1 do
    #   get     "/users",     to: "users#index"

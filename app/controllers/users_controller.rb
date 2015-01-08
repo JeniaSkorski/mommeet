@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   skip_before_filter :authenticate_user!
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-   
+
 
   
 
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @users = User.all
     
     
-    render json: @users if stale?(etag: @users.all, last_modified: @users.maximum(:updated_at))
+    render json: @users , :except => [ :password] 
     
   end
 

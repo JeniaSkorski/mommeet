@@ -44,3 +44,6 @@ gem 'activeadmin', github: 'activeadmin'
 
 
 gem 'rails_12factor', group: :production
+
+
+gem 'geocoder'
